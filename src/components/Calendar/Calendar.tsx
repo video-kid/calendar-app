@@ -1,17 +1,35 @@
-import { getMonth, lastDayOfMonth } from "date-fns";
+import {
+  differenceInCalendarDays,
+  endOfMonth,
+  endOfWeek,
+  getDayOfYear,
+  getMonth,
+  startOfMonth,
+  startOfWeek,
+} from "date-fns";
 import styled from "styled-components";
+import { DayProps } from "../../types/calendarTypes";
 
 import Day from "../Day/Day";
 
-const getCurrentEpochTime = (): number => Date.now();
+const getCurrentTime = () => new Date();
 
-const getMonthNumber = (date: number) => getMonth(date) + 1;
+const getMonthNumber = (date: Date) => getMonth(date);
 
-const createMonthlyArray = (date: number) => {
-  return Array.from(
-    { length: lastDayOfMonth(date).getDate() },
-    (v, dayIndex) => ({ day: dayIndex + 1 })
-  );
+const dayOftheYearToDate = (dayIndex: number, year: number) =>
+  new Date(year, 0, dayIndex + 1);
+
+const createMonthlyArray = (date: Date): Array<DayProps> => {
+  const firstDayOfCalendarMonth = startOfWeek(startOfMonth(date));
+  const lastDayOfCalendarMonth = endOfWeek(endOfMonth(date));
+  const numberOfFirstDay = getDayOfYear(firstDayOfCalendarMonth);
+  const calendarDaysCount =
+    differenceInCalendarDays(lastDayOfCalendarMonth, firstDayOfCalendarMonth) +
+    1;
+
+  return Array.from({ length: calendarDaysCount }, (v, dayIndex) => ({
+    day: dayOftheYearToDate(numberOfFirstDay + dayIndex, 2022),
+  }));
 };
 
 const CalendarWrapper = styled.div`
@@ -23,12 +41,12 @@ const CalendarWrapper = styled.div`
 `;
 
 interface CalendarProps {
-  initialDate?: number;
+  initialDate?: Date;
   displayMode?: "monthly" | "weekly" | "daily";
 }
 
 const Calendar = ({
-  initialDate = getCurrentEpochTime(),
+  initialDate = getCurrentTime(),
   displayMode = "monthly",
 }: CalendarProps) => {
   console.log(createMonthlyArray(initialDate));
@@ -36,13 +54,13 @@ const Calendar = ({
     <div>
       <div>
         <button>{`<`}</button>
-        {getMonthNumber(initialDate)}
+        {getMonthNumber(initialDate) + 1}
         <button>{`>`}</button>
       </div>
       <div>calendar mode: {displayMode}</div>
       <CalendarWrapper>
         {createMonthlyArray(initialDate).map(({ day }) => (
-          <Day key={day} day={day} />
+          <Day key={day.getTime()} day={day} />
         ))}
       </CalendarWrapper>
     </div>

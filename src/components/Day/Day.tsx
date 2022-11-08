@@ -1,8 +1,6 @@
+import { intlFormat } from "date-fns";
 import styled from "styled-components";
-
-interface DayProps {
-  day: number;
-}
+import { DayProps } from "../../types/calendarTypes";
 
 const DayWrapper = styled.div`
   display: flex;
@@ -11,7 +9,16 @@ const DayWrapper = styled.div`
 `;
 
 const Day = ({ day, ...props }: DayProps) => {
-  return <DayWrapper {...props}>{day}</DayWrapper>;
+  return (
+    <DayWrapper {...props}>
+      {intlFormat(day, {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })}
+    </DayWrapper>
+  );
 };
 
 export default Day;
