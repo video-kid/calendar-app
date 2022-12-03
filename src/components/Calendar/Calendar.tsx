@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { useCalendar } from "../../hooks/useCalendar";
 import { displayMode } from "../../types/calendarTypes";
+import {
+  EventCalendarProps,
+  EventProps,
+  EventsProps,
+} from "../../types/eventTypes";
 import { getCurrentTime, getMonthNumber } from "../../utils/utils";
 
 import Day from "../Day/Day";
@@ -13,15 +18,17 @@ const CalendarWrapper = styled.div`
   border-left: 1px solid black;
 `;
 
-interface CalendarProps {
+interface CalendarProps<T> {
+  events: T;
   initialDate?: Date;
   displayMode?: displayMode;
 }
 
-const Calendar = ({
+export const Calendar = ({
+  events,
   initialDate = getCurrentTime(),
   displayMode = "month",
-}: CalendarProps) => {
+}: CalendarProps<EventCalendarProps<EventProps>>) => {
   const {
     selectedDay,
     calendarArray,
@@ -30,7 +37,7 @@ const Calendar = ({
     nextPeriod,
     prevPeriod,
   } = useCalendar();
-  console.log(calendarArray);
+  console.log(events);
   return (
     <div>
       <div>
@@ -72,5 +79,3 @@ const Calendar = ({
     </div>
   );
 };
-
-export default Calendar;
