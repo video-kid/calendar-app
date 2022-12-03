@@ -24,16 +24,13 @@ const Calendar = ({
 }: CalendarProps) => {
   const {
     selectedDay,
-    calendarObject,
+    calendarArray,
     calendarMode,
     changeCalendarMode,
     nextPeriod,
     prevPeriod,
-  } = useCalendar({
-    display: displayMode,
-    initialDate: initialDate,
-  });
-  console.log(selectedDay);
+  } = useCalendar();
+  console.log(calendarArray);
   return (
     <div>
       <div>
@@ -68,7 +65,7 @@ const Calendar = ({
         </div>
       </div>
       <CalendarWrapper>
-        {calendarObject.map(({ day }) => (
+        {calendarArray.map(({ day }) => (
           <Day key={day.getTime()} day={day} />
         ))}
       </CalendarWrapper>

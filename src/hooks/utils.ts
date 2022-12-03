@@ -1,4 +1,5 @@
 import {
+  addDays,
   differenceInCalendarDays,
   endOfMonth,
   endOfWeek,
@@ -9,18 +10,26 @@ import {
 
 import { DayProps } from "../types/calendarTypes";
 
-const dayOftheYearToDate = (dayIndex: number, year: number) =>
-  new Date(year, 0, dayIndex + 1);
-
 export const createMonthlyArray = (date: Date): Array<DayProps> => {
   const firstDayOfCalendarMonth = startOfWeek(startOfMonth(date));
   const lastDayOfCalendarMonth = endOfWeek(endOfMonth(date));
-  const numberOfFirstDay = getDayOfYear(firstDayOfCalendarMonth);
+
   const calendarDaysCount =
     differenceInCalendarDays(lastDayOfCalendarMonth, firstDayOfCalendarMonth) +
     1;
 
   return Array.from({ length: calendarDaysCount }, (v, dayIndex) => ({
-    day: dayOftheYearToDate(numberOfFirstDay + dayIndex, date.getFullYear()),
+    day: addDays(firstDayOfCalendarMonth, dayIndex),
+  }));
+};
+
+export const createWeeklyArray = (date: Date): Array<DayProps> => {
+  const firstDay = startOfWeek(date);
+  const lastDay = endOfWeek(date);
+
+  const calendarDaysCount = differenceInCalendarDays(lastDay, firstDay) + 1;
+
+  return Array.from({ length: calendarDaysCount }, (v, dayIndex) => ({
+    day: addDays(firstDay, dayIndex),
   }));
 };
