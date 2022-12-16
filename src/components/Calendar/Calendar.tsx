@@ -1,11 +1,7 @@
 import styled from "styled-components";
 import { useCalendar } from "../../hooks/useCalendar";
 import { displayMode } from "../../types/calendarTypes";
-import {
-  EventCalendarProps,
-  EventProps,
-  EventsProps,
-} from "../../types/eventTypes";
+import { EventCalendarProps, EventProps } from "../../types/eventTypes";
 import { getCurrentTime, getMonthNumber } from "../../utils/utils";
 
 import Day from "../Day/Day";
@@ -24,11 +20,11 @@ interface CalendarProps<T> {
   displayMode?: displayMode;
 }
 
-export const Calendar = ({
+export const Calendar = <CustomEventProps extends EventProps>({
   events,
   initialDate = getCurrentTime(),
   displayMode = "month",
-}: CalendarProps<EventCalendarProps<EventProps>>) => {
+}: CalendarProps<EventCalendarProps<CustomEventProps>>): JSX.Element => {
   const {
     selectedDay,
     calendarArray,

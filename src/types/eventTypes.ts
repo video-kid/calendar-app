@@ -2,9 +2,8 @@ import { months } from "./calendarTypes";
 
 export interface EventProps {
   name: string;
-  type: string;
-  startDate: string;
-  endDate: string;
+  startTime: string;
+  endTime: string;
 }
 
 export interface EventsProps<T> {
