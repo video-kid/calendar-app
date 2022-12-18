@@ -12,6 +12,15 @@ interface customEventProps extends EventProps {
 const eventsMockup: EventCalendarProps<customEventProps> = {
   "2022": {
     "12": {
+      "6": {
+        eventk0: {
+          id: "0",
+          name: "event0",
+          type: "x",
+          startTime: "xx",
+          endTime: "xxx",
+        },
+      },
       "8": {
         eventk1: {
           id: "1",
@@ -43,6 +52,4 @@ const App = () => {
   );
 };
 
-const add = (first: number, second: number): number => first + second;
-
-export { App, add };
+export { App };

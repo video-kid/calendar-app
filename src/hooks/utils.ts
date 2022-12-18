@@ -1,13 +1,7 @@
-import {
-  addDays,
-  differenceInCalendarDays,
-  endOfMonth,
-  endOfWeek,
-  startOfMonth,
-  startOfWeek,
-} from "date-fns";
+import { addDays, differenceInCalendarDays } from "date-fns";
 
 import { DayProps } from "../types/calendarTypes";
+import { getPeriodRangeDate } from "../utils/utils";
 
 const createCalendarDaysArray = (
   calendarDaysCount: number,
@@ -18,19 +12,17 @@ const createCalendarDaysArray = (
   }));
 
 export const createMonthlyArray = (date: Date): Array<DayProps> => {
-  const firstDayOfCalendarMonth = startOfWeek(startOfMonth(date));
-  const lastDayOfCalendarMonth = endOfWeek(endOfMonth(date));
+  const period = getPeriodRangeDate.month(date);
   const calendarDaysCount =
-    differenceInCalendarDays(lastDayOfCalendarMonth, firstDayOfCalendarMonth) +
-    1;
+    differenceInCalendarDays(period.last, period.first) + 1;
 
-  return createCalendarDaysArray(calendarDaysCount, firstDayOfCalendarMonth);
+  return createCalendarDaysArray(calendarDaysCount, period.first);
 };
 
 export const createWeeklyArray = (date: Date): Array<DayProps> => {
-  const firstDay = startOfWeek(date);
-  const lastDay = endOfWeek(date);
-  const calendarDaysCount = differenceInCalendarDays(lastDay, firstDay) + 1;
+  const period = getPeriodRangeDate.week(date);
+  const calendarDaysCount =
+    differenceInCalendarDays(period.last, period.first) + 1;
 
-  return createCalendarDaysArray(calendarDaysCount, firstDay);
+  return createCalendarDaysArray(calendarDaysCount, period.first);
 };

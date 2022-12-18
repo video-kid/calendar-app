@@ -2,7 +2,12 @@ import styled from "styled-components";
 import { useCalendar } from "../../hooks/useCalendar";
 import { displayMode } from "../../types/calendarTypes";
 import { EventCalendarProps, EventProps } from "../../types/eventTypes";
-import { getCurrentTime, getMonthNumber } from "../../utils/utils";
+import {
+  eventToCalendarConverter,
+  getCurrentTime,
+  getMonthNumber,
+  getPeriodRangeDate,
+} from "../../utils/utils";
 
 import Day from "../Day/Day";
 
@@ -10,6 +15,7 @@ const CalendarWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin: 50px;
+  aspect-ratio: auto 2 / 1;
   border-top: 1px solid black;
   border-left: 1px solid black;
 `;
@@ -33,7 +39,13 @@ export const Calendar = <CustomEventProps extends EventProps>({
     nextPeriod,
     prevPeriod,
   } = useCalendar();
-  console.log(events);
+  // console.log(events);
+  // console.log(calendarArray);
+  eventToCalendarConverter(
+    events,
+    getPeriodRangeDate[calendarMode](selectedDay)
+  );
+
   return (
     <div>
       <div>
