@@ -1,15 +1,7 @@
-import { addDays, differenceInCalendarDays } from "date-fns";
+import { differenceInCalendarDays } from "date-fns";
 
 import { DayProps } from "../types/calendarTypes";
-import { getPeriodRangeDate } from "../utils/utils";
-
-const createCalendarDaysArray = (
-  calendarDaysCount: number,
-  firstDayOfCalendarMonth: Date
-) =>
-  Array.from({ length: calendarDaysCount }, (v, dayIndex) => ({
-    day: addDays(firstDayOfCalendarMonth, dayIndex),
-  }));
+import { createCalendarDaysArray, getPeriodRangeDate } from "../utils/utils";
 
 export const createMonthlyArray = (date: Date): Array<DayProps> => {
   const period = getPeriodRangeDate.month(date);

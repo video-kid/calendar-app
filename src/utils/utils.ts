@@ -1,4 +1,6 @@
 import {
+  addDays,
+  differenceInCalendarDays,
   endOfMonth,
   endOfWeek,
   getMonth,
@@ -6,6 +8,7 @@ import {
   startOfWeek,
 } from "date-fns";
 import { months } from "../types/calendarTypes";
+import { EventProps } from "../types/eventTypes";
 
 export const getCurrentTime = () => new Date();
 
@@ -47,4 +50,44 @@ export const eventToCalendarConverter = <T>(
   // console.log(dateRange);
   // console.log(events);
   // console.log(eventsDatesFilterConfig(dateRange));
+};
+
+export const createCalendarDaysArray = (
+  calendarDaysCount: number,
+  firstDay: Date,
+  eventDetails: any = {}
+) =>
+  Array.from({ length: calendarDaysCount }, (v, dayIndex) => ({
+    day: addDays(firstDay, dayIndex),
+    ...eventDetails,
+  }));
+
+const getUnmergedDayObjects = (events: Array<EventProps>) =>
+  events
+    .map((event) => {
+      const startDate = new Date(parseInt(event.startTime));
+      const endDate = new Date(parseInt(event.endTime));
+      const eventDurationInDays =
+        differenceInCalendarDays(endDate, startDate) + 1;
+      return createCalendarDaysArray(eventDurationInDays, startDate, event);
+    })
+    .flat();
+
+export const eventsListToCalendarEvents = (events: Array<EventProps>) => {
+  return getUnmergedDayObjects(events).reduce((acc, event) => {
+    const year = event.day.getFullYear();
+    const month = event.day.getMonth() + 1;
+    const day = event.day.getDate();
+
+    return {
+      ...acc,
+      [year]: {
+        ...acc[year],
+        [month]: {
+          ...acc?.[year]?.[month],
+          [day]: { ...acc?.[year]?.[month]?.[day], [event.id]: event },
+        },
+      },
+    };
+  }, {});
 };
