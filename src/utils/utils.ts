@@ -6,9 +6,16 @@ import {
   getMonth,
   startOfMonth,
   startOfWeek,
+  addMonths,
+  addWeeks,
+  subMonths,
+  subWeeks,
 } from "date-fns";
-import { months } from "../types/calendarTypes";
-import { EventProps } from "../types/eventTypes";
+
+import { DayProps } from "../types/calendarTypes";
+
+import { displayMode, months } from "../types/calendarTypes";
+import { EventCalendarProps, EventProps } from "../types/eventTypes";
 
 export const getCurrentTime = () => new Date();
 
@@ -19,6 +26,47 @@ interface periodRangeProps {
   first: Date;
   last: Date;
 }
+
+export const createMonthlyArray = (date: Date): Array<DayProps> => {
+  const period = getPeriodRangeDate.month(date);
+  const calendarDaysCount =
+    differenceInCalendarDays(period.last, period.first) + 1;
+
+  return createCalendarDaysArray(calendarDaysCount, period.first);
+};
+
+export const createWeeklyArray = (date: Date): Array<DayProps> => {
+  const period = getPeriodRangeDate.week(date);
+  const calendarDaysCount =
+    differenceInCalendarDays(period.last, period.first) + 1;
+
+  return createCalendarDaysArray(calendarDaysCount, period.first);
+};
+
+export const calendarActions = {
+  month: {
+    generateCalendar(day: Date) {
+      return createMonthlyArray(day);
+    },
+    nextPeriod(day: Date) {
+      return addMonths(day, 1);
+    },
+    prevPeriod(day: Date) {
+      return subMonths(day, 1);
+    },
+  },
+  week: {
+    generateCalendar(day: Date) {
+      return createWeeklyArray(day);
+    },
+    nextPeriod(day: Date) {
+      return addWeeks(day, 1);
+    },
+    prevPeriod(day: Date) {
+      return subWeeks(day, 1);
+    },
+  },
+};
 
 export const getPeriodRangeDate = {
   week(date: Date): periodRangeProps {
@@ -32,24 +80,19 @@ export const getPeriodRangeDate = {
   },
 };
 
-const createEventsDatesFilterConfig = (date: Date) => ({
-  day: date.getDate(),
-  month: date.getMonth() + 1,
+export const getDateDetails = (date: Date) => ({
   year: date.getFullYear(),
-});
-
-const eventsDatesFilterConfig = (dateRange: periodRangeProps) => ({
-  startDateConfig: createEventsDatesFilterConfig(dateRange.first),
-  endDateConfig: createEventsDatesFilterConfig(dateRange.last),
+  month: date.getMonth() + 1,
+  day: date.getDate(),
 });
 
 export const eventToCalendarConverter = <T>(
-  events: T,
-  dateRange: periodRangeProps
+  events: EventCalendarProps<T>,
+  calendarMode: displayMode,
+  selectedDay: Date
 ) => {
   // console.log(dateRange);
   // console.log(events);
-  // console.log(eventsDatesFilterConfig(dateRange));
 };
 
 export const createCalendarDaysArray = (
@@ -73,12 +116,11 @@ const getUnmergedDayObjects = (events: Array<EventProps>) =>
     })
     .flat();
 
-export const eventsListToCalendarEvents = (events: Array<EventProps>) => {
+export const eventsListToCalendarEvents = <T extends EventProps>(
+  events: Array<T>
+) => {
   return getUnmergedDayObjects(events).reduce((acc, event) => {
-    const year = event.day.getFullYear();
-    const month = event.day.getMonth() + 1;
-    const day = event.day.getDate();
-
+    const { year, month, day } = getDateDetails(event.day);
     return {
       ...acc,
       [year]: {

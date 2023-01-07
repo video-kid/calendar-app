@@ -1,8 +1,6 @@
-import { addMonths, addWeeks, subMonths, subWeeks } from "date-fns";
 import { useEffect, useState } from "react";
 import { DayProps, displayMode } from "../types/calendarTypes";
-import { getCurrentTime } from "../utils/utils";
-import { createMonthlyArray, createWeeklyArray } from "./utils";
+import { calendarActions, getCurrentTime } from "../utils/utils";
 
 type settingsProps = {
   display: displayMode;
@@ -12,31 +10,6 @@ type settingsProps = {
 const defaultSettings: settingsProps = {
   display: "month",
   initialDate: getCurrentTime(),
-};
-
-const calendarActions = {
-  month: {
-    generateCalendar(day: Date) {
-      return createMonthlyArray(day);
-    },
-    nextPeriod(day: Date) {
-      return addMonths(day, 1);
-    },
-    prevPeriod(day: Date) {
-      return subMonths(day, 1);
-    },
-  },
-  week: {
-    generateCalendar(day: Date) {
-      return createWeeklyArray(day);
-    },
-    nextPeriod(day: Date) {
-      return addWeeks(day, 1);
-    },
-    prevPeriod(day: Date) {
-      return subWeeks(day, 1);
-    },
-  },
 };
 
 export const useCalendar = (settings: settingsProps = defaultSettings) => {

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { useCalendar } from "../../hooks/useCalendar";
 import { displayMode } from "../../types/calendarTypes";
-import { EventCalendarProps, EventProps } from "../../types/eventTypes";
+import { EventProps } from "../../types/eventTypes";
 import {
+  eventsListToCalendarEvents,
   eventToCalendarConverter,
   getCurrentTime,
   getMonthNumber,
-  getPeriodRangeDate,
 } from "../../utils/utils";
 
 import Day from "../Day/Day";
@@ -30,7 +30,7 @@ export const Calendar = <CustomEventProps extends EventProps>({
   events,
   initialDate = getCurrentTime(),
   displayMode = "month",
-}: CalendarProps<EventCalendarProps<CustomEventProps>>): JSX.Element => {
+}: CalendarProps<Array<CustomEventProps>>): JSX.Element => {
   const {
     selectedDay,
     calendarArray,
@@ -39,11 +39,11 @@ export const Calendar = <CustomEventProps extends EventProps>({
     nextPeriod,
     prevPeriod,
   } = useCalendar();
-  // console.log(events);
-  // console.log(calendarArray);
+
   eventToCalendarConverter(
-    events,
-    getPeriodRangeDate[calendarMode](selectedDay)
+    eventsListToCalendarEvents(events),
+    calendarMode,
+    selectedDay
   );
 
   return (

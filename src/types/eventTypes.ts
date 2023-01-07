@@ -1,6 +1,7 @@
 import { months } from "./calendarTypes";
 
 export interface EventProps {
+  id: string;
   name: string;
   startTime: string;
   endTime: string;
