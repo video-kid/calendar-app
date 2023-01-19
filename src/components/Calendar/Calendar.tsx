@@ -40,12 +40,6 @@ export const Calendar = <CustomEventProps extends EventProps>({
     prevPeriod,
   } = useCalendar();
 
-  eventToCalendarConverter(
-    eventsListToCalendarEvents(events),
-    calendarMode,
-    selectedDay
-  );
-
   return (
     <div>
       <div>
@@ -80,8 +74,11 @@ export const Calendar = <CustomEventProps extends EventProps>({
         </div>
       </div>
       <CalendarWrapper>
-        {calendarArray.map(({ day }) => (
-          <Day key={day.getTime()} day={day} />
+        {eventToCalendarConverter(
+          eventsListToCalendarEvents(events),
+          calendarArray
+        ).map((day) => (
+          <Day key={day.day.getTime()} day={day.day} events={day.events} />
         ))}
       </CalendarWrapper>
     </div>
