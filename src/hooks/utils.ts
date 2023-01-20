@@ -23,11 +23,11 @@ type periodRangeProps = {
 export const createCalendarDaysArray = <T extends EventProps>(
   calendarDaysCount: number,
   firstDay: Date,
-  event: T = {} as T
+  eventDetails: T = {} as T
 ): Array<DayProps & EventProps> => {
   return Array.from({ length: calendarDaysCount }, (v, dayIndex) => ({
     day: addDays(firstDay, dayIndex),
-    ...event,
+    ...eventDetails,
   }));
 };
 
