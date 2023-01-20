@@ -10,6 +10,8 @@ import {
   subMonths,
   subWeeks,
 } from "date-fns";
+import { DayProps } from "../types/calendarTypes";
+import { EventProps } from "../types/eventTypes";
 
 import { EmptyDayProps } from "./types";
 
@@ -18,14 +20,14 @@ type periodRangeProps = {
   last: Date;
 };
 
-export const createCalendarDaysArray = (
+export const createCalendarDaysArray = <T extends EventProps>(
   calendarDaysCount: number,
   firstDay: Date,
-  eventDetails: any = {}
-) => {
+  event: T = {} as T
+): Array<DayProps & EventProps> => {
   return Array.from({ length: calendarDaysCount }, (v, dayIndex) => ({
     day: addDays(firstDay, dayIndex),
-    ...eventDetails,
+    ...event,
   }));
 };
 
@@ -41,7 +43,7 @@ export const getPeriodRangeDate = {
   },
 };
 
-export const createMonthlyArray = (date: Date): Array<EmptyDayProps> => {
+export const createMonthlyEmptyArray = (date: Date): Array<EmptyDayProps> => {
   const period = getPeriodRangeDate.month(date);
   const calendarDaysCount =
     differenceInCalendarDays(period.last, period.first) + 1;
@@ -49,7 +51,7 @@ export const createMonthlyArray = (date: Date): Array<EmptyDayProps> => {
   return createCalendarDaysArray(calendarDaysCount, period.first);
 };
 
-export const createWeeklyArray = (date: Date): Array<EmptyDayProps> => {
+export const createWeeklyEmptyArray = (date: Date): Array<EmptyDayProps> => {
   const period = getPeriodRangeDate.week(date);
   const calendarDaysCount =
     differenceInCalendarDays(period.last, period.first) + 1;
@@ -60,7 +62,7 @@ export const createWeeklyArray = (date: Date): Array<EmptyDayProps> => {
 export const calendarActions = {
   month: {
     generateCalendar(day: Date) {
-      return createMonthlyArray(day);
+      return createMonthlyEmptyArray(day);
     },
     nextPeriod(day: Date) {
       return addMonths(day, 1);
@@ -71,7 +73,7 @@ export const calendarActions = {
   },
   week: {
     generateCalendar(day: Date) {
-      return createWeeklyArray(day);
+      return createWeeklyEmptyArray(day);
     },
     nextPeriod(day: Date) {
       return addWeeks(day, 1);
