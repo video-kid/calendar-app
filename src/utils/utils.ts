@@ -1,9 +1,7 @@
 import { differenceInCalendarDays, getMonth } from "date-fns";
 import { createCalendarDaysArray } from "../hooks/utils";
 
-import { DayProps } from "../types/calendarTypes";
-
-import { months } from "../types/calendarTypes";
+import { EmptyDayProps, months } from "../types/calendarTypes";
 import { EventCalendarProps, EventProps } from "../types/eventTypes";
 
 export const getCurrentTime = () => new Date();
@@ -19,7 +17,7 @@ export const getDateDetails = (date: Date) => ({
 
 export const eventToCalendarConverter = <T>(
   events: EventCalendarProps<T>,
-  calendarArray: Array<DayProps>
+  calendarArray: Array<EmptyDayProps>
 ) =>
   calendarArray.map((day) => ({
     day: day.day,
@@ -31,7 +29,7 @@ export const eventToCalendarConverter = <T>(
 
 const getUnmergedDayObjects = (
   events: Array<EventProps>
-): Array<DayProps & EventProps> => {
+): Array<EmptyDayProps & EventProps> => {
   return events
     .map((event) => {
       const startDate = new Date(parseInt(event.startTime));

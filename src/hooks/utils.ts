@@ -10,10 +10,8 @@ import {
   subMonths,
   subWeeks,
 } from "date-fns";
-import { DayProps } from "../types/calendarTypes";
+import { EmptyDayProps } from "../types/calendarTypes";
 import { EventProps } from "../types/eventTypes";
-
-import { EmptyDayProps } from "./types";
 
 type periodRangeProps = {
   first: Date;
@@ -24,7 +22,7 @@ export const createCalendarDaysArray = <T extends EventProps>(
   calendarDaysCount: number,
   firstDay: Date,
   eventDetails: T = {} as T
-): Array<DayProps & EventProps> => {
+): Array<EmptyDayProps & EventProps> => {
   return Array.from({ length: calendarDaysCount }, (v, dayIndex) => ({
     day: addDays(firstDay, dayIndex),
     ...eventDetails,

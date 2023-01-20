@@ -1,7 +1,6 @@
 import { intlFormat } from "date-fns";
 import styled from "styled-components";
-// import { DayProps } from "../../types/calendarTypes";
-import { EventCalendarDayProps } from "../../types/eventTypes";
+import { DayProps } from "../../types/calendarTypes";
 import Event from "../Event/Event";
 
 const DayWrapper = styled.div`
@@ -9,11 +8,6 @@ const DayWrapper = styled.div`
   border-right: 1px solid black;
   border-bottom: 1px solid black;
 `;
-
-interface DayProps<T> {
-  day: Date;
-  events: EventCalendarDayProps<T> | null;
-}
 
 const Day = <T extends {}>({ day, events = null, ...props }: DayProps<T>) => {
   return (

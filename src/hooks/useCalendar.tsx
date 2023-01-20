@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { displayMode } from "../types/calendarTypes";
+import { displayMode, EmptyDayProps } from "../types/calendarTypes";
 import { getCurrentTime } from "../utils/utils";
-import { EmptyDayProps } from "./types";
 import { calendarActions } from "./utils";
 
 type settingsProps = {
