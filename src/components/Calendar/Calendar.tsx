@@ -20,11 +20,11 @@ const CalendarWrapper = styled.div`
   border-left: 1px solid black;
 `;
 
-interface CalendarProps<T> {
+type CalendarProps<T> = {
   events: T;
   initialDate?: Date;
   displayMode?: displayMode;
-}
+};
 
 export const Calendar = <CustomEventProps extends EventProps>({
   events,

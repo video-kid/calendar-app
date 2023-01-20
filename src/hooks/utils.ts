@@ -13,10 +13,10 @@ import {
 
 import { EmptyDayProps } from "./types";
 
-interface periodRangeProps {
+type periodRangeProps = {
   first: Date;
   last: Date;
-}
+};
 
 export const createCalendarDaysArray = (
   calendarDaysCount: number,

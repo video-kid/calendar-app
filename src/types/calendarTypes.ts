@@ -1,7 +1,7 @@
-export interface DayProps {
+export type DayProps = {
   day: Date;
   events?: any;
-}
+};
 
 export type displayMode = "month" | "week";
 
