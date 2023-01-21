@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useCalendar } from "../../hooks/useCalendar";
 import { displayMode } from "../../types/calendarTypes";
+import { EventProps } from "../../types/eventTypes";
 import { getCurrentTime, getMonthNumber } from "../../utils/utils";
 
 import Day from "../Day/Day";
@@ -9,19 +10,22 @@ const CalendarWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin: 50px;
+  aspect-ratio: auto 2 / 1;
   border-top: 1px solid black;
   border-left: 1px solid black;
 `;
 
-interface CalendarProps {
+type CalendarProps<T> = {
+  events: T;
   initialDate?: Date;
   displayMode?: displayMode;
-}
+};
 
-const Calendar = ({
+export const Calendar = <CustomEventProps extends EventProps>({
+  events,
   initialDate = getCurrentTime(),
   displayMode = "month",
-}: CalendarProps) => {
+}: CalendarProps<Array<CustomEventProps>>): JSX.Element => {
   const {
     selectedDay,
     calendarArray,
@@ -29,14 +33,14 @@ const Calendar = ({
     changeCalendarMode,
     nextPeriod,
     prevPeriod,
-  } = useCalendar();
-  console.log(calendarArray);
+  } = useCalendar(events);
+
   return (
     <div>
       <div>
-        <button onClick={() => prevPeriod()}>{`<`}</button>
+        <button onClick={prevPeriod}>{`<`}</button>
         {getMonthNumber(selectedDay)}
-        <button onClick={() => nextPeriod()}>{`>`}</button>
+        <button onClick={nextPeriod}>{`>`}</button>
       </div>
       <div>
         <div>
@@ -65,12 +69,10 @@ const Calendar = ({
         </div>
       </div>
       <CalendarWrapper>
-        {calendarArray.map(({ day }) => (
-          <Day key={day.getTime()} day={day} />
+        {calendarArray.map((day) => (
+          <Day key={day.day.getTime()} day={day.day} events={day.events} />
         ))}
       </CalendarWrapper>
     </div>
   );
 };
-
-export default Calendar;
