@@ -1,13 +1,8 @@
 import styled from "styled-components";
 import { useCalendar } from "../../hooks/useCalendar";
 import { displayMode } from "../../types/calendarTypes";
-import { EventCalendarProps, EventProps } from "../../types/eventTypes";
-import {
-  eventToCalendarConverter,
-  getCurrentTime,
-  getMonthNumber,
-  getPeriodRangeDate,
-} from "../../utils/utils";
+import { EventProps } from "../../types/eventTypes";
+import { getCurrentTime, getMonthNumber } from "../../utils/utils";
 
 import Day from "../Day/Day";
 
@@ -20,17 +15,17 @@ const CalendarWrapper = styled.div`
   border-left: 1px solid black;
 `;
 
-interface CalendarProps<T> {
+type CalendarProps<T> = {
   events: T;
   initialDate?: Date;
   displayMode?: displayMode;
-}
+};
 
 export const Calendar = <CustomEventProps extends EventProps>({
   events,
   initialDate = getCurrentTime(),
   displayMode = "month",
-}: CalendarProps<EventCalendarProps<CustomEventProps>>): JSX.Element => {
+}: CalendarProps<Array<CustomEventProps>>): JSX.Element => {
   const {
     selectedDay,
     calendarArray,
@@ -38,20 +33,14 @@ export const Calendar = <CustomEventProps extends EventProps>({
     changeCalendarMode,
     nextPeriod,
     prevPeriod,
-  } = useCalendar();
-  // console.log(events);
-  // console.log(calendarArray);
-  eventToCalendarConverter(
-    events,
-    getPeriodRangeDate[calendarMode](selectedDay)
-  );
+  } = useCalendar(events);
 
   return (
     <div>
       <div>
-        <button onClick={() => prevPeriod()}>{`<`}</button>
+        <button onClick={prevPeriod}>{`<`}</button>
         {getMonthNumber(selectedDay)}
-        <button onClick={() => nextPeriod()}>{`>`}</button>
+        <button onClick={nextPeriod}>{`>`}</button>
       </div>
       <div>
         <div>
@@ -80,8 +69,8 @@ export const Calendar = <CustomEventProps extends EventProps>({
         </div>
       </div>
       <CalendarWrapper>
-        {calendarArray.map(({ day }) => (
-          <Day key={day.getTime()} day={day} />
+        {calendarArray.map((day) => (
+          <Day key={day.day.getTime()} day={day.day} events={day.events} />
         ))}
       </CalendarWrapper>
     </div>

@@ -1,14 +1,15 @@
 import { months } from "./calendarTypes";
 
-export interface EventProps {
+export type EventProps = {
+  id: string;
   name: string;
   startTime: string;
   endTime: string;
-}
+};
 
-export interface EventsProps<T> {
+export type EventsProps<T> = {
   [key: string]: T;
-}
+};
 export type EventCalendarDayProps<T> = {
   [key: string]: T;
 };

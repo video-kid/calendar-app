@@ -1,5 +1,11 @@
-export interface DayProps {
+import { EventCalendarDayProps } from "./eventTypes";
+
+export type EmptyDayProps = {
   day: Date;
+};
+
+export interface DayProps<T> extends EmptyDayProps {
+  events: EventCalendarDayProps<T> | null;
 }
 
 export type displayMode = "month" | "week";
