@@ -2,12 +2,7 @@ import styled from "styled-components";
 import { useCalendar } from "../../hooks/useCalendar";
 import { displayMode } from "../../types/calendarTypes";
 import { EventProps } from "../../types/eventTypes";
-import {
-  eventsListToCalendarEvents,
-  eventToCalendarConverter,
-  getCurrentTime,
-  getMonthNumber,
-} from "../../utils/utils";
+import { getCurrentTime, getMonthNumber } from "../../utils/utils";
 
 import Day from "../Day/Day";
 
@@ -38,14 +33,14 @@ export const Calendar = <CustomEventProps extends EventProps>({
     changeCalendarMode,
     nextPeriod,
     prevPeriod,
-  } = useCalendar();
+  } = useCalendar(events);
 
   return (
     <div>
       <div>
-        <button onClick={() => prevPeriod()}>{`<`}</button>
+        <button onClick={prevPeriod}>{`<`}</button>
         {getMonthNumber(selectedDay)}
-        <button onClick={() => nextPeriod()}>{`>`}</button>
+        <button onClick={nextPeriod}>{`>`}</button>
       </div>
       <div>
         <div>
@@ -74,10 +69,7 @@ export const Calendar = <CustomEventProps extends EventProps>({
         </div>
       </div>
       <CalendarWrapper>
-        {eventToCalendarConverter(
-          eventsListToCalendarEvents(events),
-          calendarArray
-        ).map((day) => (
+        {calendarArray.map((day) => (
           <Day key={day.day.getTime()} day={day.day} events={day.events} />
         ))}
       </CalendarWrapper>

@@ -15,19 +15,7 @@ export const getDateDetails = (date: Date) => ({
   day: date.getDate().toString(),
 });
 
-export const eventToCalendarConverter = <T>(
-  events: EventCalendarProps<T>,
-  calendarArray: Array<EmptyDayProps>
-) =>
-  calendarArray.map((day) => ({
-    day: day.day,
-    events:
-      events[getDateDetails(day.day).year][
-        getDateDetails(day.day).month as months
-      ]?.[getDateDetails(day.day).day] || {},
-  }));
-
-const getUnmergedDayObjects = (
+const spreadEventsToUnorderedEventDayArray = (
   events: Array<EventProps>
 ): Array<EmptyDayProps & EventProps> => {
   return events
@@ -42,10 +30,11 @@ const getUnmergedDayObjects = (
 };
 
 const emptyObject: { [key: string]: any } = {};
+
 export const eventsListToCalendarEvents = <T extends EventProps>(
   events: Array<T>
 ): EventCalendarProps<T> => {
-  return getUnmergedDayObjects(events).reduce((acc, event) => {
+  return spreadEventsToUnorderedEventDayArray(events).reduce((acc, event) => {
     const { year, month, day } = getDateDetails(event.day);
     return {
       ...acc,

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { displayMode, EmptyDayProps } from "../types/calendarTypes";
-import { getCurrentTime } from "../utils/utils";
-import { calendarActions } from "./utils";
+import { DayProps, displayMode } from "../types/calendarTypes";
+import { EventProps } from "../types/eventTypes";
+import { eventsListToCalendarEvents, getCurrentTime } from "../utils/utils";
+import { calendarActions, fillEmptyCalendarWithCalendarEvents } from "./utils";
 
 type settingsProps = {
   display: displayMode;
@@ -13,13 +14,19 @@ const defaultSettings: settingsProps = {
   initialDate: getCurrentTime(),
 };
 
-export const useCalendar = (settings: settingsProps = defaultSettings) => {
+export const useCalendar = <T extends EventProps>(
+  events: Array<T>,
+  settings: settingsProps = defaultSettings
+) => {
   const [calendarMode, setCalendarMode] = useState<displayMode>(
     settings.display
   );
   const [selectedDay, setSelectedDay] = useState<Date>(settings.initialDate);
-  const [calendarArray, setCalendarArray] = useState<Array<EmptyDayProps>>(
-    calendarActions[calendarMode].generateCalendar(selectedDay)
+  const [calendarArray, setCalendarArray] = useState<Array<DayProps<T>>>(
+    fillEmptyCalendarWithCalendarEvents(
+      eventsListToCalendarEvents(events),
+      calendarActions[calendarMode].generateEmptyCalendar(selectedDay)
+    )
   );
 
   const changeCalendarMode = (mode: displayMode) => setCalendarMode(mode);
@@ -36,9 +43,12 @@ export const useCalendar = (settings: settingsProps = defaultSettings) => {
 
   useEffect(() => {
     setCalendarArray(
-      calendarActions[calendarMode].generateCalendar(selectedDay)
+      fillEmptyCalendarWithCalendarEvents(
+        eventsListToCalendarEvents(events),
+        calendarActions[calendarMode].generateEmptyCalendar(selectedDay)
+      )
     );
-  }, [calendarMode, selectedDay]);
+  }, [calendarMode, events, selectedDay]);
 
   return {
     calendarArray,
