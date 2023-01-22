@@ -1,7 +1,7 @@
-import React from "react";
+import { EventWrapper } from "./Event.styled";
 
 const Event = ({ event = { name: "a" } }: { event: any }) => {
-  return <> {event.name}</>;
+  return <EventWrapper> {event.name}</EventWrapper>;
 };
 
 export default Event;
