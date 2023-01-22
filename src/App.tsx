@@ -32,7 +32,7 @@ const eventsList: Array<customEventProps> = [
   },
   {
     id: "666",
-    name: "start 8jan end 7 feb 2023 ",
+    name: "asdfgstart 8 january end 7 febulary 2023 lorem ips",
     type: "x",
     startTime: "1673200681000",
     endTime: "1675800014000",

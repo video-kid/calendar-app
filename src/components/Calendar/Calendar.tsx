@@ -1,19 +1,17 @@
-import styled from "styled-components";
 import { useCalendar } from "../../hooks/useCalendar";
 import { displayMode } from "../../types/calendarTypes";
 import { EventProps } from "../../types/eventTypes";
-import { getCurrentTime, getMonthNumber } from "../../utils/utils";
+import { getCurrentTime } from "../../utils/utils";
+import Button from "../Button/Button";
 
 import Day from "../Day/Day";
-
-const CalendarWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin: 50px;
-  aspect-ratio: auto 2 / 1;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-`;
+import {
+  CalendarDashboard,
+  CalendarWrapper,
+  DisplayOptionsWrapper,
+  OptionWrapper,
+  PageWrapper,
+} from "./Calendar.styled";
 
 type CalendarProps<T> = {
   events: T;
@@ -37,37 +35,43 @@ export const Calendar = <CustomEventProps extends EventProps>({
 
   return (
     <div>
-      <div>
-        <button onClick={prevPeriod}>{`<`}</button>
-        {getMonthNumber(selectedDay)}
-        <button onClick={nextPeriod}>{`>`}</button>
-      </div>
-      <div>
-        <div>
-          <p>selected mode: {calendarMode}</p>
-          <input
-            type="radio"
-            id="month"
-            name="period"
-            value="month"
-            onChange={(e) => changeCalendarMode(e.target.value as displayMode)}
-            defaultChecked={calendarMode === "month"}
-          />
-          <label htmlFor="month">month</label>
-        </div>
-
-        <div>
-          <input
-            type="radio"
-            id="week"
-            name="period"
-            value="week"
-            onChange={(e) => changeCalendarMode(e.target.value as displayMode)}
-            defaultChecked={calendarMode === "week"}
-          />
-          <label htmlFor="week">week</label>
-        </div>
-      </div>
+      <CalendarDashboard>
+        <PageWrapper>
+          <Button onClick={prevPeriod}>{`<`}</Button>
+          <span>
+            {selectedDay.toLocaleString("default", { month: "long" })}
+          </span>
+          <Button onClick={nextPeriod}>{`>`}</Button>
+        </PageWrapper>
+        <DisplayOptionsWrapper>
+          <OptionWrapper>
+            <input
+              type="radio"
+              id="month"
+              name="period"
+              value="month"
+              onChange={(e) =>
+                changeCalendarMode(e.target.value as displayMode)
+              }
+              defaultChecked={calendarMode === "month"}
+            />
+            <label htmlFor="month">month</label>
+          </OptionWrapper>
+          <OptionWrapper>
+            <input
+              type="radio"
+              id="week"
+              name="period"
+              value="week"
+              onChange={(e) =>
+                changeCalendarMode(e.target.value as displayMode)
+              }
+              defaultChecked={calendarMode === "week"}
+            />
+            <label htmlFor="week">week</label>
+          </OptionWrapper>
+        </DisplayOptionsWrapper>
+      </CalendarDashboard>
       <CalendarWrapper>
         {calendarArray.map((day) => (
           <Day key={day.day.getTime()} day={day.day} events={day.events} />
