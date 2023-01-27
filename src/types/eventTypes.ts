@@ -10,9 +10,11 @@ export type EventProps = {
 export type EventsProps<T> = {
   [key: string]: T;
 };
+
 export type EventCalendarDayProps<T> = {
   [key: string]: T;
 };
+
 export type EventCalendarMonthProps<T> = {
   [key: string]: EventCalendarDayProps<T>;
 };

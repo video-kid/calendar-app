@@ -1,9 +1,14 @@
 import { intlFormat } from "date-fns";
 import { DayProps } from "../../types/calendarTypes";
+import { EventProps } from "../../types/eventTypes";
 import Event from "../Event/Event";
 import { DayIdentifier, DayWrapper, EventsWrapper } from "./Day.styled";
 
-const Day = <T extends {}>({ day, events = null, ...props }: DayProps<T>) => {
+const Day = <T extends EventProps>({
+  day,
+  events = null,
+  ...props
+}: DayProps<T>) => {
   return (
     <DayWrapper {...props}>
       <EventsWrapper>

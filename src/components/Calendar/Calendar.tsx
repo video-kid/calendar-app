@@ -1,5 +1,5 @@
 import { useCalendar } from "../../hooks/useCalendar";
-import { displayMode } from "../../types/calendarTypes";
+import { DayProps, displayMode } from "../../types/calendarTypes";
 import { EventProps } from "../../types/eventTypes";
 import { getCurrentTime } from "../../utils/utils";
 import Button from "../Button/Button";
@@ -17,12 +17,18 @@ type CalendarProps<T> = {
   events: T;
   initialDate?: Date;
   displayMode?: displayMode;
+  DayCard?: <T extends EventProps>({
+    day,
+    events,
+    ...props
+  }: DayProps<T>) => JSX.Element;
 };
 
 export const Calendar = <CustomEventProps extends EventProps>({
   events,
   initialDate = getCurrentTime(),
   displayMode = "month",
+  DayCard = Day,
 }: CalendarProps<Array<CustomEventProps>>): JSX.Element => {
   const {
     selectedDay,
@@ -73,8 +79,8 @@ export const Calendar = <CustomEventProps extends EventProps>({
         </DisplayOptionsWrapper>
       </CalendarDashboard>
       <CalendarWrapper>
-        {calendarArray.map((day) => (
-          <Day key={day.day.getTime()} day={day.day} events={day.events} />
+        {calendarArray.map(({ day, events }) => (
+          <DayCard key={day.getTime()} day={day} events={events} />
         ))}
       </CalendarWrapper>
     </div>

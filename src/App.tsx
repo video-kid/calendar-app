@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import { mainTheme } from "./themes/themes";
 import { Calendar } from "./components/Calendar/Calendar";
 import { EventProps } from "./types/eventTypes";
+import Day from "./components/Day/Day";
 
 interface customEventProps extends EventProps {
   type: string;
@@ -39,15 +40,13 @@ const eventsList: Array<customEventProps> = [
   },
 ];
 
-const App = () => {
-  return (
-    <div className="App">
-      <GlobalStyle />
-      <ThemeProvider theme={mainTheme}>
-        <Calendar events={eventsList} />
-      </ThemeProvider>
-    </div>
-  );
-};
+const App = () => (
+  <>
+    <GlobalStyle />
+    <ThemeProvider theme={mainTheme}>
+      <Calendar events={eventsList} DayCard={Day} />
+    </ThemeProvider>
+  </>
+);
 
 export { App };
