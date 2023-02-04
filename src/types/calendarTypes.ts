@@ -23,3 +23,8 @@ export type months =
   | "10"
   | "11"
   | "12";
+
+export type periodRangeProps = {
+  first: Date;
+  last: Date;
+};

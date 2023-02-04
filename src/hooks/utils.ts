@@ -10,14 +10,14 @@ import {
   subMonths,
   subWeeks,
 } from "date-fns";
-import { DayProps, EmptyDayProps, months } from "../types/calendarTypes";
+import {
+  DayProps,
+  EmptyDayProps,
+  months,
+  periodRangeProps,
+} from "../types/calendarTypes";
 import { EventCalendarProps, EventProps } from "../types/eventTypes";
 import { getDateDetails } from "../utils/utils";
-
-type periodRangeProps = {
-  first: Date;
-  last: Date;
-};
 
 export const createCalendarDaysArray = <T extends EventProps>(
   calendarDaysCount: number,
@@ -42,16 +42,9 @@ export const getPeriodRangeDate = {
   },
 };
 
-export const createMonthlyEmptyArray = (date: Date): Array<EmptyDayProps> => {
-  const period = getPeriodRangeDate.month(date);
-  const calendarDaysCount =
-    differenceInCalendarDays(period.last, period.first) + 1;
-
-  return createCalendarDaysArray(calendarDaysCount, period.first);
-};
-
-export const createWeeklyEmptyArray = (date: Date): Array<EmptyDayProps> => {
-  const period = getPeriodRangeDate.week(date);
+export const createCalendarEmptyArray = (
+  period: periodRangeProps
+): Array<EmptyDayProps> => {
   const calendarDaysCount =
     differenceInCalendarDays(period.last, period.first) + 1;
 
@@ -61,7 +54,7 @@ export const createWeeklyEmptyArray = (date: Date): Array<EmptyDayProps> => {
 export const calendarActions = {
   month: {
     generateEmptyCalendar(day: Date) {
-      return createMonthlyEmptyArray(day);
+      return createCalendarEmptyArray(getPeriodRangeDate.month(day));
     },
     nextPeriod(day: Date) {
       return addMonths(day, 1);
@@ -72,7 +65,7 @@ export const calendarActions = {
   },
   week: {
     generateEmptyCalendar(day: Date) {
-      return createWeeklyEmptyArray(day);
+      return createCalendarEmptyArray(getPeriodRangeDate.week(day));
     },
     nextPeriod(day: Date) {
       return addWeeks(day, 1);

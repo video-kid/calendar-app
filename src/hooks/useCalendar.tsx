@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
-import { DayProps, displayMode } from "../types/calendarTypes";
+import {
+  DayProps,
+  displayMode,
+  periodRangeProps,
+} from "../types/calendarTypes";
 import { EventProps } from "../types/eventTypes";
 import { eventsListToCalendarEvents, getCurrentTime } from "../utils/utils";
-import { calendarActions, fillEmptyCalendarWithCalendarEvents } from "./utils";
+import {
+  calendarActions,
+  fillEmptyCalendarWithCalendarEvents,
+  getPeriodRangeDate,
+} from "./utils";
 
 type settingsProps = {
   display: displayMode;
@@ -13,6 +21,9 @@ const defaultSettings: settingsProps = {
   display: "month",
   initialDate: getCurrentTime(),
 };
+
+const getEmptyCalendar = (calendarMode: displayMode, selectedDay: Date) =>
+  calendarActions[calendarMode].generateEmptyCalendar(selectedDay);
 
 export const useCalendar = <T extends EventProps>(
   events: Array<T>,
@@ -25,7 +36,7 @@ export const useCalendar = <T extends EventProps>(
   const [calendarArray, setCalendarArray] = useState<Array<DayProps<T>>>(
     fillEmptyCalendarWithCalendarEvents(
       eventsListToCalendarEvents(events),
-      calendarActions[calendarMode].generateEmptyCalendar(selectedDay)
+      getEmptyCalendar(settings.display, settings.initialDate)
     )
   );
 
@@ -41,14 +52,19 @@ export const useCalendar = <T extends EventProps>(
 
   const selectDay = (date: Date) => setSelectedDay(date);
 
-  useEffect(() => {
-    setCalendarArray(
-      fillEmptyCalendarWithCalendarEvents(
-        eventsListToCalendarEvents(events),
-        calendarActions[calendarMode].generateEmptyCalendar(selectedDay)
-      )
-    );
-  }, [calendarMode, events, selectedDay]);
+  const periodRange: periodRangeProps =
+    getPeriodRangeDate[calendarMode](selectedDay);
+
+  useEffect(
+    () =>
+      setCalendarArray(
+        fillEmptyCalendarWithCalendarEvents(
+          eventsListToCalendarEvents(events),
+          getEmptyCalendar(calendarMode, selectedDay)
+        )
+      ),
+    [calendarMode, events, selectedDay]
+  );
 
   return {
     calendarArray,
@@ -58,5 +74,6 @@ export const useCalendar = <T extends EventProps>(
     prevPeriod,
     selectDay,
     selectedDay,
+    periodRange,
   };
 };

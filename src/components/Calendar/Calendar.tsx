@@ -37,10 +37,12 @@ export const Calendar = <CustomEventProps extends EventProps>({
     changeCalendarMode,
     nextPeriod,
     prevPeriod,
+    periodRange,
   } = useCalendar(events);
 
   return (
-    <div>
+    <>
+      {console.log(periodRange)}
       <CalendarDashboard>
         <PageWrapper>
           <Button onClick={prevPeriod}>{`<`}</Button>
@@ -83,6 +85,6 @@ export const Calendar = <CustomEventProps extends EventProps>({
           <DayCard key={day.getTime()} day={day} events={events} />
         ))}
       </CalendarWrapper>
-    </div>
+    </>
   );
 };
