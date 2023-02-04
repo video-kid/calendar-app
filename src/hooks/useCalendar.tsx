@@ -9,7 +9,9 @@ import { eventsListToCalendarEvents, getCurrentTime } from "../utils/utils";
 import {
   calendarActions,
   fillEmptyCalendarWithCalendarEvents,
+  getEmptyCalendar,
   getPeriodRangeDate,
+  mergeEventsAndCalendar,
 } from "./utils";
 
 type settingsProps = {
@@ -21,9 +23,6 @@ const defaultSettings: settingsProps = {
   display: "month",
   initialDate: getCurrentTime(),
 };
-
-const getEmptyCalendar = (calendarMode: displayMode, selectedDay: Date) =>
-  calendarActions[calendarMode].generateEmptyCalendar(selectedDay);
 
 export const useCalendar = <T extends EventProps>(
   events: Array<T>,
@@ -58,10 +57,7 @@ export const useCalendar = <T extends EventProps>(
   useEffect(
     () =>
       setCalendarArray(
-        fillEmptyCalendarWithCalendarEvents(
-          eventsListToCalendarEvents(events),
-          getEmptyCalendar(calendarMode, selectedDay)
-        )
+        mergeEventsAndCalendar(events, calendarMode, selectedDay)
       ),
     [calendarMode, events, selectedDay]
   );

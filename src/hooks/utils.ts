@@ -12,12 +12,28 @@ import {
 } from "date-fns";
 import {
   DayProps,
+  displayMode,
   EmptyDayProps,
   months,
   periodRangeProps,
 } from "../types/calendarTypes";
 import { EventCalendarProps, EventProps } from "../types/eventTypes";
-import { getDateDetails } from "../utils/utils";
+import { eventsListToCalendarEvents, getDateDetails } from "../utils/utils";
+
+export const getEmptyCalendar = (
+  calendarMode: displayMode,
+  selectedDay: Date
+) => calendarActions[calendarMode].generateEmptyCalendar(selectedDay);
+
+export const mergeEventsAndCalendar = <T extends EventProps>(
+  events: Array<T>,
+  calendarMode: displayMode,
+  selectedDay: Date
+): Array<DayProps<T>> =>
+  fillEmptyCalendarWithCalendarEvents(
+    eventsListToCalendarEvents(events),
+    getEmptyCalendar(calendarMode, selectedDay)
+  );
 
 export const createCalendarDaysArray = <T extends EventProps>(
   calendarDaysCount: number,
