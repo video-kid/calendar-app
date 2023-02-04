@@ -1,7 +1,7 @@
 import { useCalendar } from "../../hooks/useCalendar";
 import { DayProps, displayMode } from "../../types/calendarTypes";
 import { EventProps } from "../../types/eventTypes";
-import { getCurrentTime } from "../../utils/utils";
+import { dateToEpoch, getCurrentTime } from "../../utils/utils";
 import Button from "../Button/Button";
 
 import Day from "../Day/Day";
@@ -42,7 +42,11 @@ export const Calendar = <CustomEventProps extends EventProps>({
 
   return (
     <>
-      {console.log(periodRange)}
+      {console.log(
+        periodRange,
+        dateToEpoch(periodRange.first),
+        dateToEpoch(periodRange.last)
+      )}
       <CalendarDashboard>
         <PageWrapper>
           <Button onClick={prevPeriod}>{`<`}</Button>
