@@ -24,16 +24,6 @@ type CalendarProps<T> = {
   }: DayProps<T>) => JSX.Element;
 };
 
-const truncatEvents = <T extends EventProps>(
-  events: Array<T>,
-  start: number,
-  stop: number
-): Array<T> =>
-  events.filter(
-    ({ startTime, endTime }) =>
-      parseInt(startTime) < start && parseInt(endTime) > stop
-  );
-
 export const Calendar = <CustomEventProps extends EventProps>({
   events,
   initialDate = getCurrentTime(),
@@ -50,15 +40,18 @@ export const Calendar = <CustomEventProps extends EventProps>({
     periodRange,
   } = useCalendar(events);
 
+  const truncatEvents = <T extends EventProps>(events: Array<T>): Array<T> => {
+    const stop = dateToEpoch(periodRange.first);
+    const start = dateToEpoch(periodRange.last);
+    return events.filter(
+      ({ startTime, endTime }) =>
+        parseInt(startTime) < start && parseInt(endTime) > stop
+    );
+  };
+
   return (
     <>
-      {console.log(
-        truncatEvents(
-          events,
-          dateToEpoch(periodRange.first),
-          dateToEpoch(periodRange.last)
-        )
-      )}
+      {console.log(truncatEvents(events))}
       <CalendarDashboard>
         <PageWrapper>
           <Button onClick={prevPeriod}>{`<`}</Button>
