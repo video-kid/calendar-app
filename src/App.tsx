@@ -4,6 +4,7 @@ import { mainTheme } from "./themes/themes";
 import { Calendar } from "./components/Calendar/Calendar";
 import { EventProps } from "./types/eventTypes";
 import Day from "./components/Day/Day";
+import { createCalendarEmptyArray, getPeriodRangeDate } from "./hooks/utils";
 
 interface customEventProps extends EventProps {
   type: string;
@@ -56,6 +57,11 @@ const eventsList: Array<customEventProps> = [
 
 const App = () => (
   <>
+    {console.log(
+      createCalendarEmptyArray(
+        getPeriodRangeDate.week(new Date("2022-12-18T20:00:00.817Z"))
+      )
+    )}
     <GlobalStyle />
     <ThemeProvider theme={mainTheme}>
       <Calendar events={eventsList} DayCard={Day} />
