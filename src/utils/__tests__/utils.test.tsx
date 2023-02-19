@@ -1,12 +1,21 @@
-import { getPeriodRangeDate } from "../utils";
+import { dateToEpoch, getDateDetails, getMonthNumber } from "../utils";
 
-const date = new Date(2022, 12, 18);
+const date = new Date("2022-12-18T20:00:00.817Z");
 
-const output = {
-  first: new Date("2022-11-26T23:00:00.000Z"),
-  last: new Date("2022-12-31T22:59:59.999Z"),
+test("date to epoch", () => {
+  expect(dateToEpoch(date)).toBe(1671393600817);
+});
+
+test("month numer", () => {
+  expect(getMonthNumber(date)).toBe("12");
+});
+
+const dateDetailsOutput = {
+  year: "2022",
+  month: "12",
+  day: "18",
 };
 
-test("period range test", () => {
-  expect(getPeriodRangeDate.month(date)).toMatchObject(output);
+test("date to date details object", () => {
+  expect(getDateDetails(date)).toMatchObject(dateDetailsOutput);
 });
