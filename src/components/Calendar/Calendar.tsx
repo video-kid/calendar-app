@@ -1,7 +1,7 @@
 import { useCalendar } from "../../hooks/useCalendar";
 import { DayProps, displayMode } from "../../types/calendarTypes";
 import { EventProps } from "../../types/eventTypes";
-import { getCurrentTime } from "../../utils/utils";
+import { dateToEpoch, getCurrentTime } from "../../utils/utils";
 import Button from "../Button/Button";
 
 import Day from "../Day/Day";
@@ -37,10 +37,21 @@ export const Calendar = <CustomEventProps extends EventProps>({
     changeCalendarMode,
     nextPeriod,
     prevPeriod,
+    periodRange,
   } = useCalendar(events);
 
+  const truncatEvents = <T extends EventProps>(events: Array<T>): Array<T> => {
+    const stop = dateToEpoch(periodRange.first);
+    const start = dateToEpoch(periodRange.last);
+    return events.filter(
+      ({ startTime, endTime }) =>
+        parseInt(startTime) < start && parseInt(endTime) > stop
+    );
+  };
+
   return (
-    <div>
+    <>
+      {console.log(truncatEvents(events))}
       <CalendarDashboard>
         <PageWrapper>
           <Button onClick={prevPeriod}>{`<`}</Button>
@@ -83,6 +94,6 @@ export const Calendar = <CustomEventProps extends EventProps>({
           <DayCard key={day.getTime()} day={day} events={events} />
         ))}
       </CalendarWrapper>
-    </div>
+    </>
   );
 };

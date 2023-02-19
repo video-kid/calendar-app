@@ -38,6 +38,20 @@ const eventsList: Array<customEventProps> = [
     startTime: "1673200681000",
     endTime: "1675800014000",
   },
+  {
+    id: "669",
+    name: "asdfgstart 4feb end 7 febulary 2023 lorem ips",
+    type: "x",
+    startTime: "1675533567000",
+    endTime: "1675792767000",
+  },
+  {
+    id: "769",
+    name: "asdfgstart 28feb end 28 mar 2023 lorem ips",
+    type: "x",
+    startTime: "1677607271000",
+    endTime: "1680026471000",
+  },
 ];
 
 const App = () => (

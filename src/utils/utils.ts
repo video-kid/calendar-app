@@ -51,3 +51,5 @@ export const eventsListToCalendarEvents = <T extends EventProps>(
     };
   }, emptyObject);
 };
+
+export const dateToEpoch = (date: Date): number => new Date(date).getTime();
