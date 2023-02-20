@@ -51,7 +51,6 @@ export const Calendar = <CustomEventProps extends EventProps>({
 
   return (
     <>
-      {console.log(truncatEvents(events))}
       <CalendarDashboard>
         <PageWrapper>
           <Button onClick={prevPeriod}>{`<`}</Button>

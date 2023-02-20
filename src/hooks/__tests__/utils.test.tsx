@@ -1,4 +1,15 @@
-import { createCalendarEmptyArray, getPeriodRangeDate } from "../utils";
+import {
+  createCalendarDaysArray,
+  createCalendarEmptyArray,
+  getPeriodRangeDate,
+} from "../utils";
+
+const event = {
+  id: "666",
+  name: "event name 18-19 12 22",
+  startTime: "1671395669000",
+  endTime: "1671481532000",
+};
 
 const date = new Date("2022-12-18T20:00:00.817Z");
 
@@ -42,8 +53,45 @@ const emptyWeekCalendarArray = [
 ];
 
 test("creating empty calendar array test", () => {
-  // expect(getPeriodRangeDate.month(date)).toMatchObject(outputMonth);
   expect(createCalendarEmptyArray(getPeriodRangeDate.week(date))).toMatchObject(
     emptyWeekCalendarArray
+  );
+});
+
+const calendarDaysArrayOutput = [
+  {
+    day: new Date("2022-12-18T20:00:00.817Z"),
+    id: "666",
+    name: "event name 18-19 12 22",
+    startTime: "1671395669000",
+    endTime: "1671481532000",
+  },
+  {
+    day: new Date("2022-12-19T20:00:00.817Z"),
+    id: "666",
+    name: "event name 18-19 12 22",
+    startTime: "1671395669000",
+    endTime: "1671481532000",
+  },
+];
+
+test("creating calendar day with event objects array for given days (2 days here) ", () => {
+  expect(createCalendarDaysArray(2, date, event)).toMatchObject(
+    calendarDaysArrayOutput
+  );
+});
+
+const emptyCalendarDayObjectArrayOutput = [
+  {
+    day: new Date("2022-12-18T20:00:00.817Z"),
+  },
+  {
+    day: new Date("2022-12-19T20:00:00.817Z"),
+  },
+];
+
+test("creating empty calendar day objects array for given days (2 days here) ", () => {
+  expect(createCalendarDaysArray(2, date)).toMatchObject(
+    emptyCalendarDayObjectArrayOutput
   );
 });
