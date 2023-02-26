@@ -5,11 +5,9 @@ import {
   periodRangeProps,
 } from "../types/calendarTypes";
 import { EventProps } from "../types/eventTypes";
-import { eventsListToCalendarEvents, getCurrentTime } from "../utils/utils";
+import { getCurrentTime } from "../utils/utils";
 import {
   calendarActions,
-  fillEmptyCalendarWithCalendarEvents,
-  getEmptyCalendar,
   getPeriodRangeDate,
   mergeEventsAndCalendar,
 } from "./utils";
@@ -33,10 +31,7 @@ export const useCalendar = <T extends EventProps>(
   );
   const [selectedDay, setSelectedDay] = useState<Date>(settings.initialDate);
   const [calendarArray, setCalendarArray] = useState<Array<DayProps<T>>>(
-    fillEmptyCalendarWithCalendarEvents(
-      eventsListToCalendarEvents(events),
-      getEmptyCalendar(settings.display, settings.initialDate)
-    )
+    mergeEventsAndCalendar(events, settings.display, settings.initialDate)
   );
 
   const changeCalendarMode = (mode: displayMode) => setCalendarMode(mode);

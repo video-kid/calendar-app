@@ -15,7 +15,7 @@ export const getDateDetails = (date: Date) => ({
   day: date.getDate().toString(),
 });
 
-const spreadEventsToUnorderedEventDayArray = (
+export const spreadEventsToUnorderedEventDayArray = (
   events: Array<EventProps>
 ): Array<EmptyDayProps & EventProps> => {
   return events
