@@ -2,6 +2,7 @@ import { Calendar } from "./Calendar";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { EventProps } from "../../types/eventTypes";
 import { getCurrentTime } from "../../utils/utils";
+import Day from "../Day/Day";
 
 interface customEventProps extends EventProps {
   type: string;
@@ -71,4 +72,19 @@ Example.args = {
   events: eventsList,
   displayMode: "month",
   initialDate: getCurrentTime(),
+};
+
+export const CustomDay = Template.bind({});
+CustomDay.args = {
+  events: eventsList,
+  displayMode: "month",
+  initialDate: getCurrentTime(),
+  DayCard: ({ day, events }) => (
+    <div key={day.getTime()}>
+      {events &&
+        Object.values(events).map((event, key) => (
+          <div key={`${day}-${key}`}>{event.name}</div>
+        ))}
+    </div>
+  ),
 };
