@@ -14,7 +14,6 @@ import {
   DayProps,
   displayMode,
   EmptyDayProps,
-  months,
   periodRangeProps,
 } from "../types/calendarTypes";
 import { EventCalendarProps, EventProps } from "../types/eventTypes";
@@ -99,7 +98,7 @@ export const fillEmptyCalendarWithCalendarEvents = <T>(
   emptyCalendar.map((day) => ({
     day: day.day,
     events:
-      events[getDateDetails(day.day).year]?.[
-        getDateDetails(day.day).month as months
-      ]?.[getDateDetails(day.day).day] || {},
+      events[getDateDetails(day.day).year]?.[getDateDetails(day.day).month]?.[
+        getDateDetails(day.day).day
+      ] || {},
   }));

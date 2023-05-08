@@ -11,7 +11,7 @@ export const getMonthNumber = (date: Date): months =>
 
 export const getDateDetails = (date: Date) => ({
   year: date.getFullYear().toString(),
-  month: (date.getMonth() + 1).toString(),
+  month: getMonthNumber(date),
   day: date.getDate().toString(),
 });
 
