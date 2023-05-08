@@ -20,7 +20,7 @@ export type EventCalendarMonthProps<T> = {
 };
 
 export type EventCalendarYearProps<T> = {
-  [key in months]?: EventCalendarMonthProps<T>;
+  [key in months]: EventCalendarMonthProps<T>;
 };
 
 export type EventCalendarProps<T> = {
